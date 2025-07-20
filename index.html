@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>駅接近通知シミュレーション</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+    }
+    #message {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+      color: #0077cc;
+    }
+    .start-button {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .start-button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <h1>駅接近通知シミュレーション</h1>
+  <p>スマホで次の駅到着を体験できます。</p>
+  <button class="start-button" onclick="startSimulation()">体験スタート</button>
+  <p id="message">まだ通知はありません</p>
+
+  <script>
+    function startSimulation() {
+      const messages = [
+        { time: 3000, text: "まもなく ◯◯駅 に到着します" },
+        { time: 6000, text: "あと1分で ◯◯駅（振動します）", vibrate: true },
+        { time: 9000, text: "◯◯駅に到着しました！" }
+      ];
+
+      let i = 0;
+      function showNext() {
+        if (i < messages.length) {
+          const m = messages[i];
+          setTimeout(() => {
+            document.getElementById("message").innerText = m.text;
+            if (m.vibrate && navigator.vibrate) {
+              navigator.vibrate([500, 200, 500]);
+            }
+            i++;
+            showNext();
+          }, m.time);
+        }
+      }
+      document.getElementById("message").innerText = "出発しました...";
+      showNext();
+    }
+  </script>
+</body>
+</html>
